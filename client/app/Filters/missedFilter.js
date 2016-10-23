@@ -4,7 +4,6 @@ angular.module('medicationReminderApp').filter('missed', function() {
     var upcomingMeds = [];
     var currentTime = moment();
     for (var i in input) {
-
       var missedTime = moment(input[i].time).add(5, 'minutes');
       var timeDifference = currentTime.diff(missedTime, 'minutes');
 

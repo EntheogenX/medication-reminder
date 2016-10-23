@@ -5,9 +5,12 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     var start = moment(),
         end = moment().add(1, 'day');
 
-  var start = moment(start).format('MM/DD/YYYY');
-  var end = moment(end).format('MM/DD/YYYY');
+  var startDate = moment(start).format('MM/DD/YYYY');
+  var endDate = moment(end).format('MM/DD/YYYY');
   var currentTime = moment();
+  $scope.calendarDate = moment().format('MMMM Do YYYY');
+  $scope.currentTime = moment().format('h:mm:ss a');
+  $scope.currentDate = moment().format('MMMM Do YYYY');
 
   $scope.fetchMedication = function(startDate,endDate) {
     $http.get('/api/medications?start=' + startDate + '&end=' + endDate).then(function (meds) {
@@ -21,35 +24,32 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     });
   }
 
-  $scope.fetchMedication(start,end);
+  $scope.fetchMedication(startDate,endDate);
   $window.setInterval(function() {
       $scope.currentTime = moment().format('h:mm:ss a');
       $scope.currentDate = moment().format('MMMM Do YYYY');
       currentTime = moment();
 
-      var upcoming = $filter('missed')($scope.meds,'missed',false );
+      var upcoming = $filter('missed')($scope.meds, false);
+
       for (var i in upcoming) {
         var medTime = moment(upcoming[i].time);
 
         var timeDifference = currentTime.diff(medTime, 'seconds');
 
-        if (timeDifference == -300) // 5 minutes before
+        if (timeDifference == 0)
         {
-          $scope.playAlertSound(true);
-          $scope.playAlertSound('before');
+          $scope.playAlertSound('now');
         }
         else if (timeDifference == 300) // 5 minutes after
         {
-          $scope.medStatus = "status-missed";
           $scope.playAlertSound('after');
 
         }
-        else if (timeDifference == 0)
-        {
-          $scope.playAlertSound('completed');
-        }
-        else if (timeDifference >= -30000 && timeDifference <= 300) {
-          $scope.medStatus = "status-pending";
+
+        else if (timeDifference >= -300 && timeDifference <= 300) {
+          if (timeDifference <= 300  && timeDifference >= 0)
+            upcoming[i].medStatus = "status-pending";
           upcoming[i].showButton = true;
         }
 
@@ -58,24 +58,22 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     }
     , 1000);
 
-
-
-
   $scope.completeMed = function(m) {
     m.completed = true;
+    m.isClose = false;
+    m.medStatus = "status-completed";
     $scope.updateMedication(m);
-    $scope.medStatus = "status-completed";
   }
 
   $scope.eventSources = [];
 
   $scope.dayClick = function(t) {
-      var start = moment(t._d),
-        end = moment(t._d).add(1, 'day');
-
-      var utcStartDate = moment.utc(start).format('MM/DD/YYYY');
-      var utcEndTime = moment.utc(end).format('MM/DD/YYYY');
-    $scope.fetchMedication(utcStartDate,utcEndTime);
+      var start = moment(t._d).add(1, 'day'),
+        end = moment(t._d).add(2, 'day');
+      var startDate = start.format('MM/DD/YYYY'),
+      endDate = end.format('MM/DD/YYYY');
+    $scope.calendarDate = start.format('MMMM Do YYYY');
+    $scope.fetchMedication(startDate,endDate);
 
   };
 
@@ -84,9 +82,7 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
     if (type == "after")
       audio = new Audio('assets/sounds/airhorn.wav');
-    else if (type == "complete")
-      audio = new Audio('assets/sounds/okay.wav');
-    else if (type == "before")
+    else if (type == "now")
       audio = new Audio('assets/sounds/ding.wav');
     else
       return;
@@ -100,9 +96,15 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
       height: "auto",
       selectable: true,
       editable: true,
+      ignoreTimezone: false,
+      header:{
+        right: 'prev,next'
+      },
+      timezone:'local',
       dayClick: $scope.dayClick,
-
-
+      eventClick: $scope.alertEventOnClick,
+      eventDrop: $scope.alertOnDrop,
+      eventResize: $scope.alertOnResize
     }
   };
 

@@ -2,19 +2,27 @@
   <div class="panel-heading">Missed Medication</div>
     <span ng-show="(meds|missed:true).length == 0">All caught up!</span>
     <div class="table-responsive" ng-show="(meds|missed:true).length>0">
-      <table  class="table table-condensed table-hover missed-table" >
+      <table  class="table table-condensed missed-table" >
         <thead>
             <tr>
-              <th>Name</th>
-              <th>Dosage</th>
-              <th>Time</th>
+              <th style="width:30%;">Name</th>
+              <th style="width:30%;">Dosage</th>
+              <th style="width:40%;">Time</th>
             </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="m in meds | missed : true">
-            <td>{{m.name}}</td>
-            <td>{{m.dosage}}</td>
-            <td>{{m.formatTime}}&nbsp;<i class="glyphicon pull-right missed-icon glyphicon-remove-sign"></i></td>
+          <tr>
+            <td colspan="3" style="padding:0;">
+              <div class="scrollit">
+                <table class="table table-condensed" style="margin-bottom:0;">
+                    <tr ng-repeat="m in meds | missed : true">
+                      <td style="width:30%;">{{m.name}}</td>
+                      <td style="width:30%;">{{m.dosage}}</td>
+                      <td style="width:40%;">{{m.formatTime}}&nbsp;<i class="glyphicon pull-right missed-icon glyphicon-remove-sign"></i></td>
+                    </tr>
+                </table>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

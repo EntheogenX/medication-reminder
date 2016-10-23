@@ -1,14 +1,15 @@
-<div class="list-group">
+<div class="list-group medicine-cards">
   <div ng-repeat="m in meds | missed : false">
-    <div class="medicine-card list-group-item" ng-class="medStatus" id="{{m._id}}">
-      <!--<i class="glyphicon glyphicon-hand-right"></i>-->
-      <p class="medicine-name">{{m.name}}</p>
-      <div class="pull-right">
-       <input type="button" class="btn btn-sm btn-success" ng-click="completeMed(m)" ng-if="m.showButton" value="Complete"/>
-       </div>
-      <label>Dosage: <small>{{m.dosage}}</small></label><br/>
-      <label>Next dose: <small>{{m.formatTime}}</small></label>
+    <div class="medicine-card list-group-item" ng-class="m.medStatus" id="{{m._id}}">
+      <span class="medicine-name">{{m.name}}</span>
+      <div class="pull-right card-button-container">
+       <input type="button" class="btn btn-sm btn-default" ng-click="completeMed(m)" ng-if="m.showButton"  ng-show="!m.completed" value="Complete"/>
+        <i class="glyphicon glyphicon-ok-sign"  ng-if="m.completed"></i>
+       </div><br/>
+      <span class="med-info"><b>Dosage:</b>&nbsp;{{m.dosage}}</span><br/>
+      <span class="med-info"><b>Next dose:</b>&nbsp;{{m.formatTime}}</span>
     </div>
+    <!--<i class="glyphicon glyphicon-hand-left" ng-if="m.showButton"></i>-->
   </div>
 </div>
 

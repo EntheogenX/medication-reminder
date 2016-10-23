@@ -5,6 +5,7 @@
 #wrapper {
   width:1000px;
   margin:0 auto;
+  font-family: "Lucida Console";
 }
 
 #banner {
@@ -20,11 +21,11 @@
 
 .hero-unit {
     position: relative;
-    padding: 30px 15px;
     color: #F5F5F5;
     text-align: center;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-    background: #4393B9;
+    background: #8fa6b1;
+    font-family: "Lucida Console";
 }
 
 .footer {
@@ -35,22 +36,34 @@
 }
 
 .medicine-card {
-  border: 1px solid black;
+  border: 1px solid #ddd;
   width: 60%;
   margin: 10px;
   padding: 5px 10px;
+  display: inline-block;
+  text-align:left;
+  font-size:12px;
+}
+
+.card-button-container {
+  display: inline-block;
+  padding-top: 14px;
+}
+
+.medicine-cards {
+  text-align:center;
 }
 
 .time-box {
-  border: 2px solid black;
+  border: 1px solid #ddd;
   text-align: center;
-  margin: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .alert-empty-records {
   margin:15px;
-  font-weight:bold;
-  font-size:15px;
+  font-size:14px;
   text-align:center;
 }
 
@@ -75,14 +88,46 @@
   font-size:14px;
 }
 
-.status-pending {
-   border-color:yellow;
+.completed-icon {
+  color :green;
+  font-size:16px;
 }
 
-.status-completed {
+.status-pending {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)!important;
+  border-color:yellow;
+}
+.status-pending {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)!important;
   border-color:yellow;
 }
 
-.status-missed {
-  border-color:red;
+.status-completed {
+  transition: all 2s linear;
+  opacity: 0;
+  border-color:green;
 }
+
+.status-pending .med-info {
+  background-color: #FFFF00;
+}
+
+.calendar-date {
+  font-size:14px;
+  padding:0;
+  width:50%;
+  display:inline-block;
+  margin-bottom:0;
+}
+
+.section-header {
+  text-align:center;
+  font-size:16px;
+  margin-bottom:0;
+}
+
+.scrollit{
+  overflow-y:auto;
+  height:200px;
+}
+
