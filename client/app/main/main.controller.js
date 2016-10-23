@@ -2,11 +2,10 @@
 
 angular.module('medicationReminderApp').controller('MainCtrl', function ($scope, $http, $window, $filter) {
 
-    var start = moment(),
-        end = moment().add(1, 'day');
-
-  var startDate = moment(start).format('MM/DD/YYYY');
-  var endDate = moment(end).format('MM/DD/YYYY');
+  var start = moment(),
+      end = moment().add(1, 'day');
+  var startDate = moment(start).format('MM/DD/YYYY'),
+      endDate = moment(end).format('MM/DD/YYYY');
   var currentTime = moment();
   $scope.calendarDate = moment().format('MMMM Do YYYY');
   $scope.currentTime = moment().format('h:mm:ss a');
@@ -15,17 +14,16 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
   $scope.fetchMedication = function(startDate,endDate) {
     $http.get('/api/medications?start=' + startDate + '&end=' + endDate).then(function (meds) {
       $scope.meds = meds.data;
-
     });
   }
 
   $scope.updateMedication = function(medication) {
     $http.put('/api/medications/'+ medication._id, angular.toJson(medication)).then(function (med) {
-      $scope.fetchMedication(startDate,endDate);
+      $scope.dayClick(med.data.time);
     });
   }
 
-  $scope.fetchMedication(startDate,endDate);
+  $scope.fetchMedication(startDate,endDate); // init medication data for today data
   $window.setInterval(function() {
       $scope.currentTime = moment().format('hh:mm:ss a');
       $scope.currentDate = moment().format('MMMM Do YYYY');
@@ -48,7 +46,7 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
         }
 
-        else if (timeDifference >= -3000 && timeDifference <= 300) {
+        else if (timeDifference >= -300 && timeDifference <= 300) {
           if (timeDifference <= 300  && timeDifference >= 0)
             upcoming[i].medStatus = "status-pending";
           upcoming[i].showButton = true;
@@ -63,13 +61,13 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
     m.completed = true;
     m.medStatus = "status-completed";
     $scope.updateMedication(m);
-  }
+  };
 
   $scope.eventSources = [];
 
   $scope.dayClick = function(t) {
-      var start = moment(t._d).add(1, 'day'),
-        end = moment(t._d).add(2, 'day');
+      var start = moment(t);
+        end = moment(t).add(1, 'day');
       var startDate = start.format('MM/DD/YYYY'),
       endDate = end.format('MM/DD/YYYY');
     $scope.calendarDate = start.format('MMMM Do YYYY');
@@ -79,7 +77,6 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
   $scope.playAlertSound = function(type) {
     var audio;
-
     if (type == "after")
       audio = new Audio('assets/sounds/airhorn.wav');
     else if (type == "now")

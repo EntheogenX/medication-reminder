@@ -25,28 +25,6 @@ exports.index = function (req, res) {
     });
 };
 
-exports.missed = function (req, res) {
-
-  var query = {};
-  // console.log(moment.format('MM/DD/YYYY').toDate());
-  //console.log(new date());
-  if (req.query.start && req.query.end) {
-    query = {
-      $and: [
-        {time: {$gte: req.query.start}},
-        {time: {$lt: req.query.end}},
-        {completed: {$eq: false}}
-      ]
-    };
-    q(Medication.find(query).sort({'d.c': -1}).exec()).then(function (meds) {
-      res.json(meds);
-    }).catch(function (err) {
-      console.error('Error occured listing medications', err);
-      res.send(500);
-    });
-  }
-};
-
 exports.show = function (req, res) {
     q(Medication.findById(req.params.id).exec()).then(function (med) {
         if (med) {
