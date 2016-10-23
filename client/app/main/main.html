@@ -7,7 +7,7 @@
 </header>
 <div class="container-fluid" id="wrapper">
   <div class="row">
-      <div class="col-sm-5">
+      <div class="col-sm-6">
         <div class="panel time-box">
           <span>{{currentTime}}</span><br/>
           <span>{{currentDate}}</span>
@@ -15,7 +15,7 @@
         <div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
         <my-missed ng-show="meds.length"></my-missed>
       </div>
-    <div class="col-sm-7">
+    <div class="col-sm-6">
       <h4 class="section-header">Medication Reminders for <br/><pre class="calendar-date"><i class="glyphicon glyphicon-calendar"></i>&nbsp;{{calendarDate}}</pre></h4>
       <div class="alert alert-info alert-empty-records" role="alert" ng-if="(meds|missed:false)==0">
         <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;No medications found for this date.

@@ -21,12 +21,13 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
   $scope.updateMedication = function(medication) {
     $http.put('/api/medications/'+ medication._id, angular.toJson(medication)).then(function (med) {
+      $scope.fetchMedication(startDate,endDate);
     });
   }
 
   $scope.fetchMedication(startDate,endDate);
   $window.setInterval(function() {
-      $scope.currentTime = moment().format('h:mm:ss a');
+      $scope.currentTime = moment().format('hh:mm:ss a');
       $scope.currentDate = moment().format('MMMM Do YYYY');
       currentTime = moment();
 
@@ -37,7 +38,7 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
         var timeDifference = currentTime.diff(medTime, 'seconds');
 
-        if (timeDifference == 0)
+        if (timeDifference == 0) // due now
         {
           $scope.playAlertSound('now');
         }
@@ -47,7 +48,7 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
         }
 
-        else if (timeDifference >= -300 && timeDifference <= 300) {
+        else if (timeDifference >= -3000 && timeDifference <= 300) {
           if (timeDifference <= 300  && timeDifference >= 0)
             upcoming[i].medStatus = "status-pending";
           upcoming[i].showButton = true;
@@ -60,7 +61,6 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
   $scope.completeMed = function(m) {
     m.completed = true;
-    m.isClose = false;
     m.medStatus = "status-completed";
     $scope.updateMedication(m);
   }

@@ -1,24 +1,30 @@
 <div class="panel panel-default missed-panel">
   <div class="panel-heading">Missed Medication</div>
-    <span ng-show="(meds|missed:true).length == 0">All caught up!</span>
+    <div class="panel-body" ng-show="(meds|missed:true).length == 0">
+      <span >All caught up!</span>
+    </div>
     <div class="table-responsive" ng-show="(meds|missed:true).length>0">
       <table  class="table table-condensed missed-table" >
         <thead>
             <tr>
               <th style="width:30%;">Name</th>
-              <th style="width:30%;">Dosage</th>
-              <th style="width:40%;">Time</th>
+              <th style="width:20%;">Dosage</th>
+              <th style="width:20%;">Time</th>
+              <th style="width:30%;"></th>
             </tr>
         </thead>
         <tbody>
           <tr>
-            <td colspan="3" style="padding:0;">
+            <td colspan="4" style="padding:0;">
               <div class="scrollit">
                 <table class="table table-condensed" style="margin-bottom:0;">
                     <tr ng-repeat="m in meds | missed : true">
                       <td style="width:30%;">{{m.name}}</td>
-                      <td style="width:30%;">{{m.dosage}}</td>
-                      <td style="width:40%;">{{m.formatTime}}&nbsp;<i class="glyphicon pull-right missed-icon glyphicon-remove-sign"></i></td>
+                      <td style="width:20%;">{{m.dosage}}</td>
+                      <td style="width:20%;">{{m.formatTime}}</td>
+                      <td style="width:30%; text-align:center;">
+                        <input type="button" class="btn btn-xs btn-default" ng-click="completeMed(m)"  ng-show="!m.completed" value="complete"/>
+                      </td>
                     </tr>
                 </table>
               </div>
