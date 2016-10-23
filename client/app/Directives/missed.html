@@ -1,0 +1,22 @@
+<div class="panel panel-default missed-panel">
+  <div class="panel-heading">Missed Medication</div>
+    <span ng-show="(meds|missed:true).length == 0">All caught up!</span>
+    <div class="table-responsive" ng-show="(meds|missed:true).length>0">
+      <table  class="table table-condensed table-hover missed-table" >
+        <thead>
+            <tr>
+              <th>Name</th>
+              <th>Dosage</th>
+              <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="m in meds | missed : true">
+            <td>{{m.name}}</td>
+            <td>{{m.dosage}}</td>
+            <td>{{m.formatTime}}&nbsp;<i class="glyphicon pull-right missed-icon glyphicon-remove-sign"></i></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+</div>

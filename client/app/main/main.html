@@ -1,0 +1,30 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+  <div class="container">
+      <h1>{{currentTime}}</h1>
+  </div>
+</header>
+<div class="container-fluid" id="wrapper">
+  <div class="row">
+      <div class="col-sm-4">
+        <div class="time-box">
+          <span>{{currentTime}}</span><br/>
+          <span>{{currentDate}}</span>
+        </div>
+        <div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
+        <my-missed ng-show="meds.length"></my-missed>
+      </div>
+    <div class="col-sm-8">
+      <div class="alert alert-info alert-empty-records" role="alert" ng-if="(meds|missed:false)==0">
+        <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;No medications found for this date.
+      </div>
+      <my-medicine info="m"></my-medicine>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+      <p>© 2016 Mavencare™, made with <span class="glyphicon glyphicon-heart heart-red"></span> for better healthcare.</p>
+  </div>
+</footer>
