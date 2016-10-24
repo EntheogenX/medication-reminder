@@ -75,6 +75,8 @@ angular.module('medicationReminderApp').controller('MainCtrl', function ($scope,
 
   };
 
+
+
   $scope.playAlertSound = function(type) {
     var audio;
     if (type == "after")
